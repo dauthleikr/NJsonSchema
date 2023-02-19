@@ -60,6 +60,11 @@ namespace NJsonSchema.CodeGeneration.CSharp
                 throw new ArgumentNullException(nameof(schema));
             }
 
+            if (schema is JsonSchemaProperty propSchema && (propSchema.OneOf?.Count > 0 || propSchema.AnyOf?.Count > 0))
+            {
+                return Settings.AnyType;
+            }
+
             schema = GetResolvableSchema(schema);
 
             if (schema == ExceptionSchema)
