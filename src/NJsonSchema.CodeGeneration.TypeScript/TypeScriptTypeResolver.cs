@@ -80,6 +80,18 @@ namespace NJsonSchema.CodeGeneration.TypeScript
                 throw new ArgumentNullException(nameof(schema));
             }
 
+
+
+            if (schema is JsonSchemaProperty propSchema && propSchema.OneOf?.Count > 0)
+            {
+                return string.Join(" | ", propSchema.OneOf.Select(item =>
+                {
+                    var tInner = Resolve(item, false, null);
+                    return tInner;
+                }).Distinct());
+            }
+
+
             schema = GetResolvableSchema(schema);
 
             // Primitive schemas (no new type)
